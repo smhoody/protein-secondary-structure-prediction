@@ -2,7 +2,7 @@
 
 A comprehensive machine learning toolkit for predicting protein secondary structure (SST3 and SST8) from amino acid sequences. This project implements multiple modeling approaches including **Transformers**, **Random Forest**, and **XGBoost**, with integrated hyperparameter optimization and experiment tracking.
 
-## 🚀 Overview
+## Overview
 
 Secondary structure prediction is a fundamental task in bioinformatics. This project provides a robust pipeline to:
 - Preprocess protein sequence data and handle standard/non-standard amino acids.
@@ -11,7 +11,7 @@ Secondary structure prediction is a fundamental task in bioinformatics. This pro
 - Track all experiments and model versions using **MLflow**.
 - Optimize hyperparameters automatically with **Optuna**.
 
-## 📊 Results
+## Results
 
 | Model | Task | Accuracy |
 |-------|------|----------|
@@ -21,7 +21,7 @@ Secondary structure prediction is a fundamental task in bioinformatics. This pro
 
 *Note: The current highest accuracy achieved in this project is **70.8%**.*
 
-## 🛠️ Project Structure
+## Project Structure
 
 - `model.py`: Transformer architecture implementation using PyTorch.
 - `data_utils.py`: Data loading, vocabulary management, and sequence padding.
@@ -31,7 +31,7 @@ Secondary structure prediction is a fundamental task in bioinformatics. This pro
 - `optimize.py` / `optimize_rf.py` / `optimize_xgb.py`: Hyperparameter optimization scripts using Optuna.
 - `data/`: Directory for input CSV datasets.
 
-## ⚙️ Installation
+## Installation
 
 1. Clone the repository.
 2. Install the required dependencies:
@@ -39,7 +39,7 @@ Secondary structure prediction is a fundamental task in bioinformatics. This pro
 pip install torch pandas scikit-learn mlflow xgboost optuna
 ```
 
-## 📖 Usage
+## Usage
 
 ### 1. Data Preprocessing
 Generate the vocabulary files from your raw protein data:
@@ -64,13 +64,13 @@ To find the best parameters for the Transformer:
 python optimize.py --trials 20
 ```
 
-## 📈 Experiment Tracking
+## Experiment Tracking
 This project uses **MLflow** for tracking experiments. To view the dashboard and compare runs:
 ```bash
 mlflow ui
 ```
 Then navigate to `http://localhost:5000` in your browser.
 
-## 🧪 Methodology
+## Methodology
 - **Transformer**: Utilizes a sequence-to-sequence architecture with Multi-Head Attention to capture long-range dependencies between amino acids.
 - **Window-based RF/XGB**: Extracts local context by sliding a window (default size 15) across the sequence, converting amino acids into one-hot encoded features.
