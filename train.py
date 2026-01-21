@@ -12,7 +12,6 @@ import argparse
 import warnings
 import logging
 
-# Suppress warnings
 warnings.filterwarnings("ignore")
 logging.getLogger("mlflow").setLevel(logging.ERROR)
 logging.getLogger("alembic").setLevel(logging.ERROR)
@@ -30,7 +29,6 @@ def train_one_epoch(model, loader, optimizer, criterion_sst8, criterion_sst3, de
         sst3 = batch['sst3'].to(device)
         mask = batch['mask'].to(device)
         
-        # Invert mask for Transformer (True means padding)
         padding_mask = ~mask
 
         optimizer.zero_grad()
@@ -106,7 +104,6 @@ def train(args, is_nested=False):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    # Load vocabs
     with open('vocabs.pkl', 'rb') as f:
         vocabs = pickle.load(f)
     
@@ -163,8 +160,6 @@ def train(args, is_nested=False):
 
             if test_acc8 > best_acc:
                 best_acc = test_acc8
-                # Specify pip_requirements to avoid the torch version warning
-                # and use keyword arguments to avoid deprecation warnings
                 mlflow.pytorch.log_model(
                     model, 
                     artifact_path="model", 

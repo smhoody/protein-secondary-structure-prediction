@@ -31,16 +31,9 @@ class ProteinTransformer(nn.Module):
         self.sst8_head = nn.Linear(d_model, n_sst8)
         self.sst3_head = nn.Linear(d_model, n_sst3)
 
-    def forward(self, src, src_key_padding_mask=None):
-        # src: [batch_size, seq_len]
-        # src_key_padding_mask: [batch_size, seq_len] where True means ignore
-        
+    def forward(self, src, src_key_padding_mask=None):        
         x = self.embedding(src) * math.sqrt(self.d_model)
         x = self.pos_encoder(x)
-        
-        # Transformer expects padding mask where True means padding
-        # Our mask is 1 for real, 0 for padding. So we need to invert it.
-        # But wait, nn.TransformerEncoderLayer batch_first=True takes src_key_padding_mask
         
         output = self.transformer_encoder(x, src_key_padding_mask=src_key_padding_mask)
         

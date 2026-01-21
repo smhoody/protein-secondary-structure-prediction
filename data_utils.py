@@ -73,10 +73,8 @@ class ProteinDataset(Dataset):
 
 def prepare_data(csv_path, max_len=512, sample_size=None):
     print(f"Loading data from {csv_path}...")
-    # Handle both relative and absolute paths
     if not os.path.isabs(csv_path):
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        # Try to find it if it's just 'data/...'
         potential_path = os.path.join(base_dir, csv_path)
         if os.path.exists(potential_path):
             csv_path = potential_path

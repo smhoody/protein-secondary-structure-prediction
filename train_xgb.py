@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder
@@ -36,13 +35,9 @@ def extract_window_features(df, window_size=15):
         # Pad with pad_idx
         padded_idx = np.pad(seq_idx, (half_window, half_window), constant_values=pad_idx)
         
-        # Create sliding windows of indices
-        # This is a cool trick to get windows without copying data
         from numpy.lib.stride_tricks import sliding_window_view
         windows = sliding_window_view(padded_idx, window_size)
         
-        # Now one-hot encode the windows: [L, window_size] -> [L, window_size, n_aas + 1]
-        # We can do this efficiently using np.eye
         L = len(seq)
         one_hot = np.eye(n_aas + 1)[windows] # [L, window_size, n_aas + 1]
         

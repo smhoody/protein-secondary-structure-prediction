@@ -9,28 +9,24 @@ class Args:
         self.__dict__.update(kwargs)
 
 def objective(trial):
-    # Suggest hyperparameters
     window_size = trial.suggest_categorical("window_size", [9, 11, 15, 21, 25])
-    # Ensure window_size is odd
     if window_size % 2 == 0:
         window_size += 1
         
     n_estimators = trial.suggest_int("n_estimators", 40, 300)
     max_depth = trial.suggest_categorical("max_depth", [None, 10, 20, 30, 40, 50])
     
-    # Other fixed parameters
     base_dir = os.path.dirname(os.path.abspath(__file__))
     default_csv = os.path.join(base_dir, "data", "2022-08-03-ss.cleaned.csv")
     
     args = Args(
         csv_path=default_csv,
-        sample_size=2000, # Using a reasonable sample size for RF efficiency
+        sample_size=2000,
         window_size=window_size,
         n_estimators=n_estimators,
         max_depth=max_depth
     )
     
-    # Run training as a nested MLflow run
     accuracy = train_rf(args, is_nested=True)
     
     return accuracy

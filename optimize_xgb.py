@@ -9,12 +9,10 @@ class Args:
         self.__dict__.update(kwargs)
 
 def objective(trial):
-    # Suggest hyperparameters
     window_size = trial.suggest_categorical("window_size", [15, 21, 25])
     n_estimators = trial.suggest_int("n_estimators", 100, 200)
     max_depth = trial.suggest_int("max_depth", 6, 15)
     
-    # Other fixed parameters
     base_dir = os.path.dirname(os.path.abspath(__file__))
     default_csv = os.path.join(base_dir, "data", "2022-08-03-ss.cleaned.csv")
     
@@ -27,7 +25,6 @@ def objective(trial):
         device="cuda"
     )
     
-    # Run training as a nested MLflow run
     accuracy = train_xgb(args, is_nested=True)
     
     return accuracy

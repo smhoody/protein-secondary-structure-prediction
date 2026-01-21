@@ -52,16 +52,13 @@ def train_rf(args, is_nested=False):
     with mlflow.start_run(nested=is_nested):
         mlflow.log_params(vars(args))
         
-        # Load data
         train_df, test_df, _, _, _ = prepare_data(args.csv_path, sample_size=args.sample_size)
         
-        # Extract features
         X_train, y_train, all_aas = extract_window_features(train_df, window_size=args.window_size)
         X_test, y_test, _ = extract_window_features(test_df, window_size=args.window_size)
         
         print(f"X_train shape: {X_train.shape}")
         
-        # Train Random Forest
         rf = RandomForestClassifier(
             n_estimators=args.n_estimators,
             max_depth=args.max_depth,
@@ -73,7 +70,6 @@ def train_rf(args, is_nested=False):
         print("Training Random Forest...")
         rf.fit(X_train, y_train)
         
-        # Evaluate
         print("Evaluating...")
         y_pred = rf.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
@@ -85,7 +81,6 @@ def train_rf(args, is_nested=False):
         
         mlflow.log_metric("sst3_accuracy", acc)
         
-        # Save model
         with open("rf_model.pkl", "wb") as f:
             pickle.dump(rf, f)
         mlflow.log_artifact("rf_model.pkl")
